@@ -63,3 +63,5 @@ class SymbolTable:
     def get_addr(self, symbol: str) -> Optional[int]:
         return self.__SYM.get(symbol)
 
+    def __repr__(self):
+        return str(self.__SYM)

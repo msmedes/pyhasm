@@ -15,6 +15,7 @@ class Parser:
         self._comp: str = None
         self._dest: str = None
         self._jump: str = None
+        self.instruction_counter = 0
 
     def load_file(self, filepath: str) -> List[str]:
         output: List[str] = []
@@ -52,11 +53,12 @@ class Parser:
         """Reads the next command from the input and makes it the current command.
         Should be called only if has_more_commands() is true."""
         self.current_command_type = self.command_type()
-        print("h", self.current_command)
         if self.current_command_type == Command.A:
             self._symbol = self.parse_a()
         if self.current_command_type == Command.C:
             self._dest, self._comp, self._jump = self.parse_c()
+        if self.current_command_type == Command.L:
+            self._symbol = self.parse_l()
 
         self.line_number += 1
 
@@ -81,6 +83,7 @@ class Parser:
         else:
             return Command.C
 
+    @property
     def symbol(self) -> str:
         """Returns the symbol or decimal Xxx of the current command
         @Xxx or (Xxx).
@@ -88,10 +91,11 @@ class Parser:
         """
         if (
             self.current_command_type == Command.A
-            or self.current_command_type == Command.C
+            or self.current_command_type == Command.L
         ):
             return self._symbol
 
+    @property
     def dest(self) -> str:
         """Returns the dest mnemonic in current C_COMMAND (8 possibilites).
         Should be called only when command_type() is C_COMMAND.
@@ -99,6 +103,7 @@ class Parser:
         if self.current_command_type == Command.C:
             return self._dest
 
+    @property
     def comp(self) -> str:
         """Returns the comp mnemonic in current C_COMMAND (28 possibilites).
         Should be called only when command_type() is C_COMMAND.
@@ -106,6 +111,7 @@ class Parser:
         if self.current_command_type == Command.C:
             return self._comp
 
+    @property
     def jump(self) -> str:
         """Returns the jump mnemonic in current C_COMMAND (8 possibilites).
         Should be called only when command_type() is C_COMMAND.
@@ -119,7 +125,7 @@ class Parser:
         positive decimal number or symbol referring to such a number.
         For example: @70 or @LOOP
         """
-        return int(self.current_command[1:])
+        return self.current_command[1:]
 
     def parse_c(self) -> C_Instruction:
         """Parses a C instruction
@@ -141,3 +147,7 @@ class Parser:
             comp = self.current_command[equal_index + 1 :]
 
         return dest, comp, jump
+
+    def parse_l(self) -> str:
+        return self.current_command[1:-1]
+
