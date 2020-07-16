@@ -1,6 +1,10 @@
-class Code:
+from typing import Optional
 
-    comp = {
+from hasm.types import CodeTable, SymTable
+
+
+class Code:
+    __COMP: CodeTable = {
         "0": "101010",
         "1": "111111",
         "-1": "111010",
@@ -31,7 +35,7 @@ class Code:
         "D|M": "010101",
     }
 
-    dest = {
+    __DEST: CodeTable = {
         "null": "000",
         "M": "001",
         "D": "010",
@@ -42,7 +46,7 @@ class Code:
         "AMD": "111",
     }
 
-    jump = {
+    __JUMP: CodeTable = {
         "null": "000",
         "JGT": "001",
         "JEQ": "010",
@@ -53,10 +57,28 @@ class Code:
         "JMP": "111",
     }
 
+    def comp(self, val: str) -> Optional[str]:
+        return self.__COMP.get(val)
+
+    def jump(self, val: str) -> Optional[str]:
+        return self.__JUMP.get(val)
+
+    def dest(self, val: str) -> Optional[str]:
+        return self.__DEST.get(val)
+
+    def _comps(self):
+        return self.__COMP
+
+    def _jumps(self):
+        return self.__JUMP
+
+    def _dests(self):
+        return self.__DEST
+
 
 class SymbolTable:
 
-    predef = {
+    __SYM: SymTable = {
         "SP": 0,
         "LCL": 1,
         "ARG": 2,
@@ -97,4 +119,17 @@ class SymbolTable:
         "SCREEN": 16834,
         "KBD": 24576,
     }
+
+    def __init__(self):
+        self.__counter = 16
+
+    def add_symbol(self, symbol: str, addr: int):
+        self.__SYM[symbol] = addr
+
+    def add_variable(self, symbol: str):
+        self.__SYM[symbol] = self.__counter
+        self.__counter += 1
+
+    def get_addr(self, symbol: str) -> Optional[int]:
+        return self.__SYM.get(symbol)
 

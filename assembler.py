@@ -1,5 +1,4 @@
 import click
-from pyassembler import parser
 
 
 @click.command()
