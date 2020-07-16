@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from hasm.types import Command, C_Instruction
 from hasm.code import Code
@@ -84,7 +84,7 @@ class Parser:
             return Command.C
 
     @property
-    def symbol(self) -> str:
+    def symbol(self) -> Optional[str]:
         """Returns the symbol or decimal Xxx of the current command
         @Xxx or (Xxx).
         Should be called only when commandType() is A_COMMAND or L_COMMAND.
@@ -96,7 +96,7 @@ class Parser:
             return self._symbol
 
     @property
-    def dest(self) -> str:
+    def dest(self) -> Optional[str]:
         """Returns the dest mnemonic in current C_COMMAND (8 possibilites).
         Should be called only when command_type() is C_COMMAND.
         """
@@ -104,7 +104,7 @@ class Parser:
             return self._dest
 
     @property
-    def comp(self) -> str:
+    def comp(self) -> Optional[str]:
         """Returns the comp mnemonic in current C_COMMAND (28 possibilites).
         Should be called only when command_type() is C_COMMAND.
         """
@@ -112,7 +112,7 @@ class Parser:
             return self._comp
 
     @property
-    def jump(self) -> str:
+    def jump(self) -> Optional[str]:
         """Returns the jump mnemonic in current C_COMMAND (8 possibilites).
         Should be called only when command_type() is C_COMMAND.
         """
