@@ -120,7 +120,7 @@ class Parser:
             return self._jump
 
     def parse_a(self) -> str:
-        """Parses an A instruction (symbols not currently supported):
+        """Parses an A instruction:
         A instructions are in the format @value, where value is a
         positive decimal number or symbol referring to such a number.
         For example: @70 or @LOOP

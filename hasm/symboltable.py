@@ -56,9 +56,10 @@ class SymbolTable:
     def add_entry(self, symbol: str, addr: int):
         self.__SYM[symbol] = addr
 
-    def add_variable(self, symbol: str):
+    def add_variable(self, symbol: str) -> int:
         self.__SYM[symbol] = self.__counter
         self.__counter += 1
+        return self.__SYM[symbol]
 
     def get_addr(self, symbol: str) -> Optional[int]:
         return self.__SYM.get(symbol)
