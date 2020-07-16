@@ -1,6 +1,9 @@
+format:
+		@black ./hasm
+
 lint:
-		@flake8 src tests
-		@pylint src tests
+		@flake8 hasm tests
+		@pylint hasm tests
 
 run:
 		@python assembler --filename test.py

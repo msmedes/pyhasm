@@ -1,79 +1,6 @@
 from typing import Optional
 
-from hasm.types import CodeTable, SymTable
-
-
-class Code:
-    __COMP: CodeTable = {
-        "0": "101010",
-        "1": "111111",
-        "-1": "111010",
-        "D": "001100",
-        "A": "110000",
-        "M": "110000",
-        "!D": "001101",
-        "!A": "110001",
-        "!M": "110001",
-        "-D": "001111",
-        "-A": "110011",
-        "-M": "110011",
-        "D+1": "011111",
-        "A+1": "110111",
-        "M+1": "110111",
-        "D-1": "001110",
-        "A-1": "110010",
-        "M-1": "110010",
-        "D+A": "000010",
-        "D+M": "000010",
-        "D-A": "010011",
-        "D-M": "010011",
-        "A-D": "000111",
-        "M-D": "000111",
-        "D&A": "000000",
-        "D&M": "000000",
-        "D|A": "010101",
-        "D|M": "010101",
-    }
-
-    __DEST: CodeTable = {
-        "null": "000",
-        "M": "001",
-        "D": "010",
-        "MD": "011",
-        "A": "100",
-        "AM": "101",
-        "AD": "110",
-        "AMD": "111",
-    }
-
-    __JUMP: CodeTable = {
-        "null": "000",
-        "JGT": "001",
-        "JEQ": "010",
-        "JGE": "011",
-        "JLT": "100",
-        "JNE": "101",
-        "JLE": "110",
-        "JMP": "111",
-    }
-
-    def comp(self, val: str) -> Optional[str]:
-        return self.__COMP.get(val)
-
-    def jump(self, val: str) -> Optional[str]:
-        return self.__JUMP.get(val)
-
-    def dest(self, val: str) -> Optional[str]:
-        return self.__DEST.get(val)
-
-    def _comps(self):
-        return self.__COMP
-
-    def _jumps(self):
-        return self.__JUMP
-
-    def _dests(self):
-        return self.__DEST
+from hasm.types import SymTable
 
 
 class SymbolTable:
@@ -123,7 +50,10 @@ class SymbolTable:
     def __init__(self):
         self.__counter = 16
 
-    def add_symbol(self, symbol: str, addr: int):
+    def __contains__(self, symbol):
+        return symbol in self.__SYM
+
+    def add_entry(self, symbol: str, addr: int):
         self.__SYM[symbol] = addr
 
     def add_variable(self, symbol: str):
