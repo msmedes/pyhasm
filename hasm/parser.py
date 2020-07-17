@@ -36,7 +36,7 @@ class Parser:
         return line
 
     def reset(self):
-        self.line_number = 0
+        self.line_number = -1
 
     def reset_commands(self):
         self.current_command_type = None
@@ -139,7 +139,7 @@ class Parser:
         except ValueError:
             equal_index = -1
         try:
-            semi_index = self.current_command.index(";")
+            semi_index = self.current_command.index(";", max(equal_index, 0))
             jump = self.current_command[semi_index + 1 :]
             comp = self.current_command[equal_index + 1 : semi_index]
         except ValueError:
@@ -149,4 +149,3 @@ class Parser:
 
     def parse_l(self) -> str:
         return self.current_command[1:-1]
-

@@ -20,8 +20,10 @@ class Assembler:
         while self.parser.has_more_commands():
             self.parser.advance()
             if self.parser.current_command_type == Command.A:
+                print("a", self.parser.current_command)
                 self.process_a_command()
             elif self.parser.current_command_type == Command.C:
+                print("c", self.parser.current_command)
                 self.process_c_command()
 
     def process_a_command(self):
@@ -39,6 +41,8 @@ class Assembler:
         dest = self.code.dest(self.parser.dest)
         comp = self.code.comp(self.parser.comp)
         jump = self.code.jump(self.parser.jump)
+        if not dest or not jump or not comp:
+            print(dest, comp, jump, self.parser.line_number)
         self.buffer.append(f"111{comp}{dest}{jump}")
 
     def process_l_commands(self):
