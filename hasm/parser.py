@@ -8,7 +8,7 @@ from hasm.symboltable import SymbolTable
 class Parser:
     def __init__(self, filepath: str):
         self.filepath = filepath
-        self.line_number = 0
+        self.line_number = -1
         self.file: List[str] = self.load_file(filepath)
         self.current_command_type: Command = None
         self._symbol: str = None
@@ -47,11 +47,12 @@ class Parser:
 
     def has_more_commands(self) -> bool:
         """Returns whether or not there are more commands in the input"""
-        return self.line_number < len(self.file)
+        return self.line_number < len(self.file) - 1
 
     def advance(self):
         """Reads the next command from the input and makes it the current command.
         Should be called only if has_more_commands() is true."""
+        self.line_number += 1
         self.current_command_type = self.command_type()
         if self.current_command_type == Command.A:
             self._symbol = self.parse_a()
@@ -59,8 +60,6 @@ class Parser:
             self._dest, self._comp, self._jump = self.parse_c()
         if self.current_command_type == Command.L:
             self._symbol = self.parse_l()
-
-        self.line_number += 1
 
     @property
     def current_command(self):
